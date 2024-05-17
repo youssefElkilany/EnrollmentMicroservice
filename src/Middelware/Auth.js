@@ -68,7 +68,7 @@ const auth = (roles=[])=> {
 
         let flag = false
         let user = {}
-        for (const obj of data) { // azwd hena users
+        for (const obj of data.users) { // azwd hena users
             console.log({obj});
             // if(decoded._id == obj.id)
             //     {

@@ -1,7 +1,8 @@
 import express from "express"
 import  bootstrap  from "./src/index.route.js"
+import dotenv from "dotenv"
 const app = express()
-
+dotenv.config()
 
 bootstrap(express,app)
 

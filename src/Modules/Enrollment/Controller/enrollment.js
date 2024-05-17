@@ -133,7 +133,7 @@ export const requestenrollment = async(req,res,next)=>{
                     return res.json("nothing added")
                 }
 
-                return res.json({MSG:"added successfully"})
+                return res.json({MSG:"requested successfully"})
 }
 
 
@@ -172,8 +172,7 @@ export const cancelEnrollment = async(req,res,next)=>{
                 axios.post(`http://localhost:5000/courses/enrolledNum`,{courseId:new mongoose.Types.ObjectId(getEnrollment.courseId)})
             }
        // sendEmail() eno cancel enrollment
-    //    sendEmail({to:req.user.email,subject:"enrollment cancellation",html:`<a href = u have cancelled ur enrollment of course </a>
-    //    <br>`})
+        sendEmail({to:req.user.email,subject:"enrollment cancellation",html:` u have cancelled ur enrollment of course ${updateEnrollment.courseName}`})
 
         // h2ll hena enrolledStudents fel course
 return res.json({MSG:"enrollment cancelled"})
@@ -247,32 +246,28 @@ export const instructorResponse = async (req,res,next)=>{
                 //hazawd enrollmentStudent fel course
             }
 
-        //     const userResponse = await axios.get(`http://127.0.0.1:8081/ejb8-1.0-SNAPSHOT/api/auth/Accounts`)
-        // const data = userResponse.data
+            const userResponse = await axios.get(`http://127.0.0.1:8081/ejb8-1.0-SNAPSHOT/api/auth/Accounts`)
+        const data = userResponse.data
 
-        // let flag = false
-        // let user = {}
-        // for (const obj of data) { // nzwd users ganb create
-        //     console.log({obj});
-        //     if(findEnrollment.studentId == obj.id)
-        //         {
-        //             user = obj
-        //             console.log({user});
-        //             flag = true
-        //             break
-        //         }
-        // } 
-        // if(!flag)
-        //     {
-        //         return res.json("id not found")
-        //     }
+        let flag = false
+        let user = {}
+        for (const obj of data.users) { // nzwd users ganb create
+            console.log({obj});
+            if(findEnrollment.studentId == obj.id)
+                {
+                    user = obj
+                    console.log({user});
+                    flag = true
+                    break
+                }
+        } 
+        if(!flag)
+            {
+                return res.json("id not found")
+            }
 
-            // sendEmail({to:user.email,subject:"enrollment respone",html:`<a instructor have ${status} your request </a>
-            // <br>`})
+             sendEmail({to:user.email,subject:"enrollment respone",html:` instructor have ${status} your request`})
 
-           // sendEmail()
-
-        // hb3t email lel student
         return res.json({MSG:"updated successfully"})
 }
 
