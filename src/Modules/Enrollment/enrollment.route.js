@@ -18,5 +18,11 @@ router.post("/req/:enrollmentId",auth(roles.instructor),ec.instructorResponse)
 // by admin
 router.get("/all",ec.getEnrollment)
 
+// msh ana elmfrood 23ml microservices deh b role brdo 3shan lw 7ad 3rf api deh ?
+// Microservices API
+router.put("/edit/:courseId/:name",ec.editEnrollmentMicro)
+router.delete("/del/:courseId",ec.removeEnrollmentMicro)
+
+
 
 export default router

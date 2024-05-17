@@ -109,7 +109,7 @@ export const requestenrollment = async(req,res,next)=>{
                     {
                         return res.json({MSG:"u alreadyy have requested"})
                     }
-                    else if(findEnrollment.status == "Accepted")
+                    else if(findEnrollment.status == "accepted")
                         {
                             return res.json({MSG:"instructor already accepted your request"})
                         }
@@ -336,11 +336,38 @@ export const instructorEnrollments = async(req,res,next)=>{
 
     const {id} = req.user
 
-    const allEnrollment = await enrollmentModel.find({instructorId:id})
+    const allEnrollment = await enrollmentModel.find({instructorId:id,status:"requested"})
     if(!allEnrollment)
         {
             return res.json("no enrollment found")
         }
 
         return res.json({"Enrollments":allEnrollment})
+}
+
+
+export const editEnrollmentMicro = async(req,res,next)=>{
+    const {courseId,name} = req.params
+    const findCourse = await enrollmentModel.findOne({courseId})
+    if(!findCourse)
+        {
+            return res.json({MSG:"enrollment not found"})
+        }
+        if(findCourse)
+            {
+                findCourse.courseName = name
+              await  findCourse.save()
+            }
+    return res.json({MSG:"updated successfull",findCourse})
+}
+
+
+export const removeEnrollmentMicro = async(req,res,next)=>{
+    const {courseId} = req.params
+    const findEnrollment = await enrollmentModel.deleteMany({courseId})
+    if(!findEnrollment)
+        {
+            return res.json({MSG:"enrollments not found"})
+        }
+    return res.json({MSG:"deleted successfull"})
 }
